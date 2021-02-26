@@ -1,0 +1,6 @@
+DROP TABLE MEMBER;
+
+CREATE TABLE MEMBER(
+                       ID VARCHAR(10) PRIMARY KEY NOT NULL,
+                       PASSWORD VARCHAR(16)
+);
