@@ -4,6 +4,9 @@
         <meta charset="UTF-8">
         <title>메인 페이지</title>
 
+        <!--        CSS 추가 예정-->
+        <link rel="stylesheet" type="text/css" href="../static/CSS/Style.css" th:href="@{/CSS/Style.css}">
+
         <!--bootstrap css,js code-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
@@ -16,13 +19,24 @@
                 <div class="container-fluid">
                     <a class="navbar-brand fs-3 text-light" href="/Main/MainIndex">Main</a>
 <!--                    menu-->
-                    <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
+                    <div class="collapse navbar-collapse d-flex justify-content-between">
                         <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link active fs-4 text-light" aria-current="page" href="/Main/Study/StudyIndex">공부</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link fs-4 text-light" data-bs-toggle="dropdown" aria-current="study">
+                                    공부
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="/Main/Study/WEB">WEB</a></li>
+                                    <li><a class="dropdown-item" href="/Main/Study/SECURITY">Security</a></li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link fs-4 text-light" href="/Main/Media/MediaIndex">미디어</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link fs-4 text-light" data-bs-toggle="dropdown" aria-current="study">
+                                    미디어
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item disabled" href="#">개발중</a></li>
+                                </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link disabled fs-4" href="#">개발중</a>
@@ -41,9 +55,72 @@
                 </div>
             </nav>
         </header>
-        <div class="container">
-
-        </div>
-        <footer></footer>
+<!--            메인 메뉴-->
+        <main class="container">
+            <form>
+                <div class="row">
+                    <article class="m-5 col-5">
+                        <span class="fs-2">WEB</span>
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr class="fs-5">
+                                    <th>ID</th>
+                                    <th>제목</th>
+                                    <th>시간</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form>
+                                    <tr class="fs-6" th:each="resultdata: ${resultWeb.resultList}">
+                                        <td>
+                                            <p class="m-0" th:text="${resultdata.ID}"></p>
+                                        </td>
+                                        <td>
+                                            <button type="submit" name="table" class="bg-transparent border-0" formmethod="GET"
+                                                    formaction="Main/Study/Check" th:text="${resultdata.TITLE}"
+                                                    th:value="${resultdata.NUMBER}"></button>
+                                        </td>
+                                        <td>
+                                            <p class="m-0" th:text="${resultdata.TIME}"></p>
+                                        </td>
+                                    </tr>
+                                </form>
+                            </tbody>
+                        </table>
+                    </article>
+                    <article class="m-5 col-5">
+                        <span class="fs-2">Security</span>
+                        <table class="table table-hover table-striped fs-4">
+                            <thead>
+                                <tr class="fs-5">
+                                    <th>ID</th>
+                                    <th>제목</th>
+                                    <th>시간</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="fs-6" th:each="resultdata: ${resultWeb.resultList}">
+                                    <td>
+                                        <p class="m-0" th:text="${resultdata.ID}"></p>
+                                    </td>
+                                    <td>
+                                        <button type="submit" name="table" class="bg-transparent border-0" formmethod="GET" formaction="#"
+                                                th:text="${resultdata.TITLE}" th:value="${resultdata.NUMBER}"></button>
+                                    </td>
+                                    <td>
+                                        <p class="m-0" th:text="${resultdata.TIME}"></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </article>
+                </div>
+            </form>
+        </main>
+        <footer class="d-flex justify-content-center footer" >
+            <p class="m-3">개발 : 박치원</p>
+            <p class="m-3">Phone : +8210-2883-2980</p>
+            <address class="m-3">E-mail : iptablecommandcode@gmail.com</address>
+        </footer>
     </body>
 </html>

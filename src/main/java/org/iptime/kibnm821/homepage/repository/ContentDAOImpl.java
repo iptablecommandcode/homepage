@@ -7,15 +7,16 @@ import org.springframework.stereotype.Repository;
 import java.util.Map;
 
 @Repository
-public class MemberDAOImpl implements MemberDAO {
+public class ContentDAOImpl implements ContentDAO {
 
     @Autowired
     SqlSessionTemplate sqlSessionTemplate;
 
     @Override
-    public Object SelectAccount(Map<String,Object> dataMap) {
-        String callquery = "account.login";
+    public Object SelectContent(String sqlMapId, Map<String, Object> dataMap) {
 
-        return sqlSessionTemplate.selectOne(callquery,dataMap);
+        Object resultObject = sqlSessionTemplate.selectList(sqlMapId,dataMap);
+
+        return resultObject;
     }
 }

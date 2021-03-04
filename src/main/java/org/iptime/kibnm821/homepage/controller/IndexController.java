@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +18,11 @@ public class IndexController {
     @Autowired
     MemberService memberService;
 
-    private final static String MAPPING = "Main";
+    private final static String MAPPING = "Main/";
 
     @RequestMapping(value = "/")
     public ModelAndView Index(HttpSession session, ModelAndView modelAndView) {
-        //메인 페이지 접근시 계정 정보 전부 free 시키기
+        //메인(로그인) 페이지 접근시 세션 계정 정보 전부 free 시키기
         session.setAttribute("account", null);
 
         modelAndView.addObject("result", null);
@@ -55,7 +54,7 @@ public class IndexController {
             setViewName = "index";
         }else {
             if (account.get("ID").equals(ID)) {//로그인시 홈 화면 전환
-                setViewName = "redirect:" + MAPPING + "/MainIndex";
+                setViewName = "redirect:" + MAPPING + "MainIndex";
                 session.setAttribute("account", ID);
             } else {//로그인 실패시
                 modelAndView.addObject("result", status);

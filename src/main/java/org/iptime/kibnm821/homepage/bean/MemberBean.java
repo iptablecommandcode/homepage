@@ -1,8 +1,6 @@
 package org.iptime.kibnm821.homepage.bean;
 
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.iptime.kibnm821.homepage.service.MemberService;
-import org.iptime.kibnm821.homepage.service.MemberServiceImpl;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;

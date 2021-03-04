@@ -1,0 +1,12 @@
+/*footer아래 고정*/
+.footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+/*bootstrap 드랍다운 자동펼치기*/
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}

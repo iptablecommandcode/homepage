@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="content">
+
+    <select id="top_notice" parameterType="Map" resultType="Map">
+        select ID,TITLE,TIME,NUMBER from NOTICE_BOARD where BIGHEADTITLE=#{BIGHEADTITLE} order by NUMBER desc limit 3
+    </select>
+
+    <select id="notice_board" parameterType="Map" resultType="Map">
+        select ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE from NOTICE_BOARD where BIGHEADTITLE=#{BIGHEADTITLE}
+    </select>
+
+    <!--    <insert id="member" parameterType="Map">-->
+    <!--        insert into member (-->
+    <!--                            ID,-->
+    <!--                            PASSWORD-->
+    <!--                            ) values (-->
+    <!--                                      #{ID},-->
+    <!--                                      #{PASSWORD}-->
+    <!--                                      )-->
+    <!--    </insert>-->
+</mapper>
