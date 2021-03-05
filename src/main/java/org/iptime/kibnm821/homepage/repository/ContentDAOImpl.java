@@ -19,4 +19,14 @@ public class ContentDAOImpl implements ContentDAO {
 
         return resultObject;
     }
+
+    @Override
+    public void InsertContent(String sqlMapId, Map<String, Object> dataMap) {
+        sqlSessionTemplate.insert(sqlMapId, dataMap);
+    }
+
+    @Override
+    public void UpdateContent(String sqlMapid, Map<String, Object> dataMap) {
+        sqlSessionTemplate.update(sqlMapid, dataMap);
+    }
 }

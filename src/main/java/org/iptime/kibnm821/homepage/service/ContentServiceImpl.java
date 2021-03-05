@@ -32,4 +32,36 @@ public class ContentServiceImpl implements ContentService{
 
         return resultObject;
     }
+
+    @Override
+    public Object Search_Board(Map<String, Object> dataMap) {
+        String sqlMapId = "content.search_board";
+        Object resultObject = new HashMap<>();
+
+        ((Map<String, Object>) resultObject).put("resultList", contentDAO.SelectContent(sqlMapId, dataMap));
+
+        return resultObject;
+    }
+
+    @Override
+    public Object Board(Map<String, Object> dataMap) {
+        String sqlMapId = "content.board";
+        Object resultObject = new HashMap<>();
+
+        ((Map<String, Object>) resultObject).put("resultList", contentDAO.SelectContent(sqlMapId, dataMap));
+
+        return resultObject;
+    }
+
+    public void insert_Board(Map<String, Object> dataMap) {
+        String sqlMapId = "content.insert_board";
+        contentDAO.InsertContent(sqlMapId, dataMap);
+    }
+
+    @Override
+    public void update_Board(Map<String, Object> dataMap) {
+        String sqlMapId = "content.update_board";
+        contentDAO.UpdateContent(sqlMapId, dataMap);
+    }
+
 }

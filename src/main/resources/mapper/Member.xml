@@ -7,7 +7,7 @@
 <mapper namespace="account">
 
     <select id="login" parameterType="Map" resultType="Map">
-        select ID from MEMBER WHERE ID =#{ID} AND PASSWORD =#{PASSWORD}
+        select ID,NAME from MEMBER WHERE ID =#{ID} AND PASSWORD =#{PASSWORD}
     </select>
 
 <!--    <insert id="member" parameterType="Map">-->

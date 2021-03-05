@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,34 +21,41 @@ public class StudyController {
     private final static String MAPPING = "Main/Study/";
 
     //상단 메뉴 Web
-    @RequestMapping(value = MAPPING + "{action}", method = {RequestMethod.GET})
-    public ModelAndView Check_Content_Board(@PathVariable String action, ModelAndView modelAndView) {
-        String viewName = MAPPING + action;
+    @RequestMapping(value = MAPPING + "{action}", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView Check_Content_Board(@PathVariable String action, ModelAndView modelAndView, HttpServletRequest request) {
+        String setViewName = MAPPING + action;
         Object resultMap = new HashMap<String, Object>();
         Map<String, Object> dbRequest = new HashMap<String, Object>();
 
-        //구분 플레그
-        dbRequest.put("BIGHEADTITLE", action);
-
         //웹 별로 구분
-        if (action.equals("WEB")) {
-            resultMap = contentService.Notice_Board(dbRequest);
-        } else if (action.equals("SECURITY")) {
-            resultMap = contentService.Notice_Board(dbRequest);
-        } else
-            viewName = "redirect:Main/MainIndex";
+        try {
+            if (action.equals("Search")) {
+                //웹 입력갑 저장 검색시
+                String TITLE = request.getParameter("TITLE");
+                String SEARCH = request.getParameter("SEARCH");
+                String BIGHEADTITLE = request.getParameter("BIGHEADTITLE");
+
+                dbRequest.put("TITLE", TITLE);
+                dbRequest.put("SEARCH", SEARCH);
+                dbRequest.put("BIGHEADTITLE", BIGHEADTITLE);
+
+                resultMap = contentService.Search_Board(dbRequest);
+
+                setViewName = MAPPING + request.getParameter("BIGHEADTITLE");
+            } else {
+                //기본 WEB이나 Security페이지
+                dbRequest.put("BIGHEADTITLE", action);
+
+                resultMap = contentService.Notice_Board(dbRequest);
+            }
+        } catch (Exception e) {
+            //에러페이지
+            setViewName = "redirect:Main/MainIndex";
+        }
 
         //최종 값 입력
         modelAndView.addObject("resultMap", resultMap);
-        modelAndView.setViewName(viewName);
+        modelAndView.setViewName(setViewName);
         return modelAndView;
     }
-
-//    @RequestMapping(value = MAPPING + "WEB", method = {RequestMethod.GET})
-//    public ModelAndView Web(ModelAndView modelAndView) {
-//        String viewName = MAPPING + "WEB";
-//
-//        modelAndView.setViewName(viewName);
-//        return modelAndView;
-//    }
 }

@@ -5,7 +5,7 @@
         <title>메인 페이지</title>
 
         <!--        CSS 추가 예정-->
-        <link rel="stylesheet" type="text/css" href="../static/CSS/Style.css" th:href="@{/CSS/Style.css}">
+        <link rel="stylesheet" type="text/css" href="../../static/CSS/Style.css" th:href="@{/CSS/Style.css}">
 
         <!--bootstrap css,js code-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
@@ -45,7 +45,7 @@
 <!--                        account info-->
                         <ul class="navbar-nav">
                             <li class="d-flex nav-item justdfy-content-center">
-                                <p class="m-2 text-light fs-5" th:text = "${session.account} + '님 로그인 중 입니다.'"></p>
+                                <p class="m-2 text-light fs-5" th:text = "${session.ID} + '님 로그인 중 입니다.'"></p>
                                 <a class="btn fs-5 text-light" href="/">
                                     로그아웃
                                 </a>
@@ -57,65 +57,75 @@
         </header>
 <!--            메인 메뉴-->
         <main class="container">
-            <form>
-                <div class="row">
-                    <article class="m-5 col-5">
-                        <span class="fs-2">WEB</span>
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr class="fs-5">
-                                    <th>ID</th>
-                                    <th>제목</th>
-                                    <th>시간</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+            <div class="row">
+                <article class="m-5 col-5">
+                    <span class="fs-2">WEB</span>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr class="fs-5">
+                            <th>ID</th>
+                            <th>제목</th>
+                            <th>시간</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="fs-6" th:each="resultdata: ${resultWeb.resultList}">
                                 <form>
-                                    <tr class="fs-6" th:each="resultdata: ${resultWeb.resultList}">
-                                        <td>
-                                            <p class="m-0" th:text="${resultdata.ID}"></p>
-                                        </td>
-                                        <td>
-                                            <button type="submit" name="table" class="bg-transparent border-0" formmethod="GET"
-                                                    formaction="Main/Study/Check" th:text="${resultdata.TITLE}"
-                                                    th:value="${resultdata.NUMBER}"></button>
-                                        </td>
-                                        <td>
-                                            <p class="m-0" th:text="${resultdata.TIME}"></p>
-                                        </td>
-                                    </tr>
-                                </form>
-                            </tbody>
-                        </table>
-                    </article>
-                    <article class="m-5 col-5">
-                        <span class="fs-2">Security</span>
-                        <table class="table table-hover table-striped fs-4">
-                            <thead>
-                                <tr class="fs-5">
-                                    <th>ID</th>
-                                    <th>제목</th>
-                                    <th>시간</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="fs-6" th:each="resultdata: ${resultWeb.resultList}">
                                     <td>
                                         <p class="m-0" th:text="${resultdata.ID}"></p>
                                     </td>
                                     <td>
-                                        <button type="submit" name="table" class="bg-transparent border-0" formmethod="GET" formaction="#"
-                                                th:text="${resultdata.TITLE}" th:value="${resultdata.NUMBER}"></button>
+                                        <button type="submit" class="bg-transparent border-0" formmethod="POST"
+                                                formaction="Study/Content/Content_show" th:text="${resultdata.TITLE}" th:value="${resultdata.NUMBER}"></button>
+                                        <input type="hidden" name="ID" th:value="${resultdata.ID}">
+                                        <input type="hidden" name="TITLE" th:value="${resultdata.TITLE}">
+                                        <input type="hidden" name="TIME" th:value="${resultdata.TIME}">
+                                        <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
+                                        <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
                                     </td>
                                     <td>
                                         <p class="m-0" th:text="${resultdata.TIME}"></p>
                                     </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </article>
-                </div>
-            </form>
+                                </form>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article class="m-5 col-5">
+                    <span class="fs-2">Security</span>
+                    <table class="table table-hover table-striped fs-4">
+                        <thead>
+                        <tr class="fs-5">
+                            <th>ID</th>
+                            <th>제목</th>
+                            <th>시간</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <form>
+                            <tr class="fs-6" th:each="resultdata: ${resultSecurity.resultList}">
+                                <input type="hidden" name="ID" th:value="${resultdata.ID}">
+                                <input type="hidden" name="TITLE" th:value="${resultdata.TITLE}">
+                                <input type="hidden" name="TIME" th:value="${resultdata.TIME}">
+                                <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
+                                <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
+                                <td>
+                                    <p class="m-0" th:text="${resultdata.ID}"></p>
+                                </td>
+                                <td>
+                                    <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
+                                    <button type="submit" name="table" class="bg-transparent border-0" formmethod="POST"
+                                            formaction="Study/Content/Content_show" th:text="${resultdata.TITLE}"></button>
+                                </td>
+                                <td>
+                                    <p class="m-0" th:text="${resultdata.TIME}"></p>
+                                </td>
+                            </tr>
+                        </form>
+                        </tbody>
+                    </table>
+                </article>
+            </div>
         </main>
         <footer class="d-flex justify-content-center footer" >
             <p class="m-3">개발 : 박치원</p>

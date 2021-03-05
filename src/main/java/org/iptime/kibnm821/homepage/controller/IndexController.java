@@ -55,7 +55,8 @@ public class IndexController {
         }else {
             if (account.get("ID").equals(ID)) {//로그인시 홈 화면 전환
                 setViewName = "redirect:" + MAPPING + "MainIndex";
-                session.setAttribute("account", ID);
+                session.setAttribute("ID", ID);
+                session.setAttribute("NAME",account.get("NAME"));
             } else {//로그인 실패시
                 modelAndView.addObject("result", status);
                 setViewName = "index";
