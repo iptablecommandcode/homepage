@@ -18,44 +18,67 @@ public class StudyController {
     @Autowired
     ContentService contentService;
 
+    //매핑 변수
+    private String setViewName;
     private final static String MAPPING = "Main/Study/";
+    
+    //사용할 전역 변수
+    private String TITLE;
+    private String SEARCH;
+    private String BIGHEADTITLE;
 
+    private Object resultMap = new HashMap<String, Object>();
+    private Map<String, Object> dataMap = new HashMap<String, Object>();
+    
+    
     //상단 메뉴 Web
     @RequestMapping(value = MAPPING + "{action}", method = { RequestMethod.GET, RequestMethod.POST })
     public ModelAndView Check_Content_Board(@PathVariable String action, ModelAndView modelAndView, HttpServletRequest request) {
-        String setViewName = MAPPING + action;
-        Object resultMap = new HashMap<String, Object>();
-        Map<String, Object> dbRequest = new HashMap<String, Object>();
+        setViewName = MAPPING + action;
+
+        //웹 입력갑 저장 검색시
+        TITLE = request.getParameter("TITLE");
+        SEARCH = request.getParameter("SEARCH");
+        BIGHEADTITLE = request.getParameter("BIGHEADTITLE");
+
+        dataMap.put("TITLE", TITLE);
+        dataMap.put("SEARCH", SEARCH);
+        dataMap.put("BIGHEADTITLE", BIGHEADTITLE);
+
 
         //웹 별로 구분
         try {
             if (action.equals("Search")) {
-                //웹 입력갑 저장 검색시
-                String TITLE = request.getParameter("TITLE");
-                String SEARCH = request.getParameter("SEARCH");
-                String BIGHEADTITLE = request.getParameter("BIGHEADTITLE");
-
-                dbRequest.put("TITLE", TITLE);
-                dbRequest.put("SEARCH", SEARCH);
-                dbRequest.put("BIGHEADTITLE", BIGHEADTITLE);
-
-                resultMap = contentService.Search_Board(dbRequest);
-
-                setViewName = MAPPING + request.getParameter("BIGHEADTITLE");
+                //검색 종류별 구분
+                if (TITLE.equals("선택")) {
+                    setViewName = "redirect:error_page";
+                } else if (SEARCH.equals(null)) {
+                    setViewName = "redirect:error_page";
+                } else if (((Map<String, Object>)resultMap).get("resultList").equals(null)) {
+                    setViewName = "redirect:error_page";
+                } else {
+                    setViewName = MAPPING + request.getParameter("BIGHEADTITLE");
+                    resultMap = contentService.Search_Board(dataMap);
+                }
             } else {
                 //기본 WEB이나 Security페이지
-                dbRequest.put("BIGHEADTITLE", action);
+                dataMap.put("BIGHEADTITLE", action);
 
-                resultMap = contentService.Notice_Board(dbRequest);
+                resultMap = contentService.Notice_Board(dataMap);
             }
         } catch (Exception e) {
             //에러페이지
-            setViewName = "redirect:Main/MainIndex";
+            setViewName = "redirect:error_page";
+        } finally {
+            //최종 값 입력
+            modelAndView.addObject("resultMap", resultMap);
+            modelAndView.setViewName(setViewName);
         }
 
-        //최종 값 입력
-        modelAndView.addObject("resultMap", resultMap);
-        modelAndView.setViewName(setViewName);
+        //        재사용을 위한 초기화
+        resultMap = new HashMap<String, Object>();
+        dataMap = new HashMap<>();
+
         return modelAndView;
     }
 }

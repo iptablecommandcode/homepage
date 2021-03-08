@@ -67,24 +67,22 @@
                 <div>
                     <div class="d-flex justify-content-between mt-5">
                         <span class="fs-2">WEB</span>
-                        <form>
-                            <div class="d-flex justify-content-end">
-                                <select class="form-select m-1" name="TITLE">
-                                    <!-- add values-->
-                                    <option selected>선택</option>
-                                    <option value="NUMBER">글번호</option>
-                                    <option value="ID">아이디</option>
-                                    <option value="NAME">이름</option>
-                                    <option value="GENDER">제목</option>
-                                    <option value="EMAIL">머리말</option>
-                                </select>
-                                <input class="form-control  m-1" type="search" name="SEARCH" placeholder="Search">
-        <!--                        큰 머리말 구분-->
-                                <input type="hidden" name="BIGHEADTITLE" value="WEB">
-                                <button class="btn btn-outline-success m-1" type="submit"
-                                        formmethod="get" formaction="/Main/Study/Search">Search</button>
-                            </div>
-                        </form>
+                        <div class="d-flex justify-content-end">
+                            <select class="form-select m-1" name="TITLE">
+                                <!-- add values-->
+                                <option selected>선택</option>
+                                <option value="NUMBER">글번호</option>
+                                <option value="ID">아이디</option>
+                                <option value="NAME">이름</option>
+                                <option value="GENDER">제목</option>
+                                <option value="EMAIL">머리말</option>
+                            </select>
+                            <input class="form-control  m-1" type="search" name="SEARCH" placeholder="Search">
+    <!--                        큰 머리말 구분-->
+                            <input type="hidden" name="BIGHEADTITLE" value="WEB">
+                            <button class="btn btn-outline-success m-1" type="submit"
+                                    formmethod="get" formaction="/Main/Study/Search">Search</button>
+                        </div>
                     </div>
                     <!--            정보-->
                     <div>
@@ -123,37 +121,35 @@
                                 </th>
                             </tr>
                             </thead>
-                            <tbody th:each="resultdata: ${resultMap.resultList}">
-                                <form>
+                            <tbody>
+                                <tr class="fs-6" th:each="resultdata: ${resultMap.resultList}">
                                     <input type="hidden" name="ID" th:value="${resultdata.ID}">
                                     <input type="hidden" name="TITLE" th:value="${resultdata.TITLE}">
                                     <input type="hidden" name="TIME" th:value="${resultdata.TIME}">
                                     <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
                                     <input type="hidden" name="HEADTITLE" th:value="${resultdata.HEADTITLE}">
                                     <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
-                                    <tr class="fs-6">
-                                        <td class="col-1 border-0">
-                                            <p class="m-0 d-flex justify-content-center" th:text="${resultdata.NUMBER}"></p>
-                                        </td>
-                                        <td class="col-1 border-0">
-                                            <p class="m-0 d-flex justify-content-center" th:text="${resultdata.HEADTITLE}"></p>
-                                        </td>
-                                        <td class="col-1 border-0">
-                                            <p class="m-0 d-flex justify-content-center" th:text="${resultdata.ID}"></p>
-                                        </td>
-                                        <td class="col-6 border-0">
-                                            <button type="submit" name="table" class="bg-transparent border-0" formmethod="POST"
-                                                    formaction="/Main/Study/Content/Content_show" th:text="${resultdata.TITLE}"
-                                            th:value="${resultdata.NUMBER}"></button>
-                                        </td>
-                                        <td class="col-1 border-0">
-                                            <p class="m-0 d-flex justify-content-center" th:text="${resultdata.NAME}"></p>
-                                        </td>
-                                        <td class="col-1 border-0">
-                                            <p class="m-0 d-flex justify-content-center" th:text="${resultdata.TIME}"></p>
-                                        </td>
-                                    </tr>
-                                </form>
+                                    <td class="col-1 border-0">
+                                        <p class="m-0 d-flex justify-content-center" th:text="${resultdata.NUMBER}"></p>
+                                    </td>
+                                    <td class="col-1 border-0">
+                                        <p class="m-0 d-flex justify-content-center" th:text="${resultdata.HEADTITLE}"></p>
+                                    </td>
+                                    <td class="col-1 border-0">
+                                        <p class="m-0 d-flex justify-content-center" th:text="${resultdata.ID}"></p>
+                                    </td>
+                                    <td class="col-6 border-0">
+                                        <button type="submit" name="table" class="bg-transparent border-0" formmethod="POST"
+                                                formaction="/Main/Study/Content/Content_show"
+                                        th:value="${resultdata.NUMBER}" th:text="${resultdata.TITLE}"/>
+                                    </td>
+                                    <td class="col-1 border-0">
+                                        <p class="m-0 d-flex justify-content-center" th:text="${resultdata.NAME}"></p>
+                                    </td>
+                                    <td class="col-1 border-0">
+                                        <p class="m-0 d-flex justify-content-center" th:text="${resultdata.TIME}"></p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

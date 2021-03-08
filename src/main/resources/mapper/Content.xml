@@ -13,7 +13,7 @@
 
 <!--    게시판 1개 출력-->
     <select id="board" parameterType="Map" resultType="Map">
-        SELECT ID, TITLE, HEADTITLE, NAME, NUMBER, BIGHEADTITLE, NUMBER, CONTENTS FROM NOTICE_BOARD WHERE NUMBER = #{NUMBER} and BIGHEADTITLE = #{BIGHEADTITLE} and ID = #{ID}
+        SELECT ID, TITLE, HEADTITLE, CONTENTS, NUMBER, BIGHEADTITLE, NUMBER, NAME FROM NOTICE_BOARD WHERE NUMBER = #{NUMBER}
     </select>
 
 <!--    Nav쪽 게시판 여러개 출력(WEB, SECURITY)-->

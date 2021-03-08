@@ -32,7 +32,7 @@ public class IndexController {
     }
 
     @PostMapping("login.do")
-    public ModelAndView SignIn(HttpServletRequest request, HttpSession session, ModelAndView modelAndView){
+    public ModelAndView SignIn(HttpServletRequest request, HttpSession session, ModelAndView modelAndView) {
         //변수 선언
         String setViewName = "";
         String status = "계정이 없거나 로그인 되지 않았습니다.";
@@ -49,14 +49,14 @@ public class IndexController {
 
         account = (Map<String, Object>) memberService.LoginCheck(account);
 
-        if(account == null) {//map에서 null일 경우 오류발생 그렇기 때문에 if문으로 먼저 거름(추후 html에서 null값 받지 않게 만들예정)
+        if (account == null) {//map에서 null일 경우 오류발생 그렇기 때문에 if문으로 먼저 거름(추후 html에서 null값 받지 않게 만들예정)
             modelAndView.addObject("result", status);
             setViewName = "index";
-        }else {
+        } else {
             if (account.get("ID").equals(ID)) {//로그인시 홈 화면 전환
                 setViewName = "redirect:" + MAPPING + "MainIndex";
                 session.setAttribute("ID", ID);
-                session.setAttribute("NAME",account.get("NAME"));
+                session.setAttribute("NAME", account.get("NAME"));
             } else {//로그인 실패시
                 modelAndView.addObject("result", status);
                 setViewName = "index";
@@ -70,5 +70,4 @@ public class IndexController {
         modelAndView.setViewName(setViewName);
         return modelAndView;
     }
-
 }

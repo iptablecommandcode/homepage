@@ -57,75 +57,75 @@
         </header>
 <!--            메인 메뉴-->
         <main class="container">
-            <div class="row">
-                <article class="m-5 col-5">
-                    <span class="fs-2">WEB</span>
-                    <table class="table table-hover table-striped">
-                        <thead>
-                        <tr class="fs-5">
-                            <th>ID</th>
-                            <th>제목</th>
-                            <th>시간</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="fs-6" th:each="resultdata: ${resultWeb.resultList}">
-                                <form>
+            <form>
+                <div class="row">
+                    <article class="m-5 col-5">
+                        <span class="fs-2">WEB</span>
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <tr class="fs-5">
+                                <th>ID</th>
+                                <th>제목</th>
+                                <th>시간</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="fs-6" th:each="resultdata: ${resultWeb.resultList}">
+                                    <input type="hidden" name="ID" th:value="${resultdata.ID}">
+                                    <input type="hidden" name="TITLE" th:value="${resultdata.TITLE}">
+                                    <input type="hidden" name="TIME" th:value="${resultdata.TIME}">
+                                    <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
+                                    <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
                                     <td>
                                         <p class="m-0" th:text="${resultdata.ID}"></p>
                                     </td>
                                     <td>
-                                        <button type="submit" class="bg-transparent border-0" formmethod="POST"
-                                                formaction="Study/Content/Content_show" th:text="${resultdata.TITLE}" th:value="${resultdata.NUMBER}"></button>
-                                        <input type="hidden" name="ID" th:value="${resultdata.ID}">
-                                        <input type="hidden" name="TITLE" th:value="${resultdata.TITLE}">
-                                        <input type="hidden" name="TIME" th:value="${resultdata.TIME}">
-                                        <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
-                                        <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
+                                        <button type="submit" name="table" class="bg-transparent border-0" formmethod="POST"
+                                                formaction="/Main/Study/Content/Content_show"
+                                                th:value="${resultdata.NUMBER}" th:text="${resultdata.TITLE}"/>
                                     </td>
                                     <td>
                                         <p class="m-0" th:text="${resultdata.TIME}"></p>
                                     </td>
-                                </form>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </article>
+                    <article class="m-5 col-5">
+                        <span class="fs-2">Security</span>
+                        <table class="table table-hover table-striped fs-4">
+                            <thead>
+                            <tr class="fs-5">
+                                <th>ID</th>
+                                <th>제목</th>
+                                <th>시간</th>
                             </tr>
-                        </tbody>
-                    </table>
-                </article>
-                <article class="m-5 col-5">
-                    <span class="fs-2">Security</span>
-                    <table class="table table-hover table-striped fs-4">
-                        <thead>
-                        <tr class="fs-5">
-                            <th>ID</th>
-                            <th>제목</th>
-                            <th>시간</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <form>
-                            <tr class="fs-6" th:each="resultdata: ${resultSecurity.resultList}">
-                                <input type="hidden" name="ID" th:value="${resultdata.ID}">
-                                <input type="hidden" name="TITLE" th:value="${resultdata.TITLE}">
-                                <input type="hidden" name="TIME" th:value="${resultdata.TIME}">
-                                <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
-                                <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
-                                <td>
-                                    <p class="m-0" th:text="${resultdata.ID}"></p>
-                                </td>
-                                <td>
+                            </thead>
+                            <tbody>
+                                <tr class="fs-6" th:each="resultdata: ${resultSecurity.resultList}">
+                                    <input type="hidden" name="ID" th:value="${resultdata.ID}">
+                                    <input type="hidden" name="TITLE" th:value="${resultdata.TITLE}">
+                                    <input type="hidden" name="TIME" th:value="${resultdata.TIME}">
                                     <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
-                                    <button type="submit" name="table" class="bg-transparent border-0" formmethod="POST"
-                                            formaction="Study/Content/Content_show" th:text="${resultdata.TITLE}"></button>
-                                </td>
-                                <td>
-                                    <p class="m-0" th:text="${resultdata.TIME}"></p>
-                                </td>
-                            </tr>
-                        </form>
-                        </tbody>
-                    </table>
-                </article>
-            </div>
+                                    <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
+                                    <td>
+                                        <p class="m-0" th:text="${resultdata.ID}"></p>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
+                                        <button type="submit" name="table" class="bg-transparent border-0" formmethod="POST"
+                                                formaction="/Main/Study/Content/Content_show"
+                                                th:value="${resultdata.NUMBER}" th:text="${resultdata.TITLE}"/>
+                                    </td>
+                                    <td>
+                                        <p class="m-0" th:text="${resultdata.TIME}"></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </article>
+                </div>
+            </form>
         </main>
         <footer class="d-flex justify-content-center footer" >
             <p class="m-3">개발 : 박치원</p>
