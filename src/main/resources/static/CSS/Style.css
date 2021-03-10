@@ -1,9 +1,17 @@
+.html {
+    height: 100%;
+}
+.body {
+    margin: 0;
+    height: 100%;
+}
+
 /*footer아래 고정*/
 .footer {
     position: absolute;
-    left: 0;
     bottom: 0;
-    width: 100%;
+    left: 0;
+    right: 0;
 }
 /*bootstrap 드랍다운 자동펼치기*/
 .dropdown:hover .dropdown-menu {

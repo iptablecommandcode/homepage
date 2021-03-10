@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head th:each="resultdata: ${resultMap.resultList}">
+    <head>
         <meta charset="UTF-8">
-        <title th:text="'Study(' + ${resultdata.BIGHEADTITLE} + ') 페이지'"></title>
+        <title>Study(WEB) 페이지</title>
 
         <!--        CSS 추가 예정-->
         <link rel="stylesheet" type="text/css" href="../../../static/CSS/Style.css" th:href="@{/CSS/Style.css}">
@@ -153,6 +153,23 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="d-flex justify-content-center">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination" th:each="num: ${number.sequence(start,end)}">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#" th:text="${num}"></a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary" formmethod="get" formaction="/Main/Study/Content/Content_new">
                             새 글 작성
@@ -161,10 +178,10 @@
                 </div>
             </form>
         </main>
-        <footer class="d-flex justify-content-center footer" >
-            <p class="m-3">개발 : 박치원</p>
-            <p class="m-3">Phone : +8210-2883-2980</p>
-            <address class="m-3">E-mail : iptablecommandcode@gmail.com</address>
-        </footer>
+<!--        <footer class="d-flex justify-content-center footer" >-->
+<!--            <p class="m-3">개발 : 박치원</p>-->
+<!--            <p class="m-3">Phone : +8210-2883-2980</p>-->
+<!--            <address class="m-3">E-mail : iptablecommandcode@gmail.com</address>-->
+<!--        </footer>-->
     </body>
 </html>

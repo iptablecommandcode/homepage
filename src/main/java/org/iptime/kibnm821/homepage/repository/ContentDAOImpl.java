@@ -1,5 +1,6 @@
 package org.iptime.kibnm821.homepage.repository;
 
+import org.iptime.kibnm821.homepage.bean.Paging;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,5 +29,19 @@ public class ContentDAOImpl implements ContentDAO {
     @Override
     public void UpdateContent(String sqlMapid, Map<String, Object> dataMap) {
         sqlSessionTemplate.update(sqlMapid, dataMap);
+    }
+
+    @Override
+    public Object SelectOne(String sqlMapId, Map<String, Object> dataMap) {
+        Object resultObject = sqlSessionTemplate.selectOne(sqlMapId, dataMap);
+        return resultObject;
+    }
+
+    @Override
+    public Object SelectText(String sqlMapId, Paging paging) {
+
+        Object resultObject = sqlSessionTemplate.selectList(sqlMapId, paging);
+
+        return resultObject;
     }
 }

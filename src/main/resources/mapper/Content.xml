@@ -8,49 +8,81 @@
 
 <!--    상위 3개-->
     <select id="top_notice" parameterType="Map" resultType="Map">
-        select ID, TITLE, TIME, NUMBER, BIGHEADTITLE from NOTICE_BOARD where BIGHEADTITLE=#{BIGHEADTITLE} order by TIME desc limit 3
+        select ID, TITLE, TIME, NUMBER, BIGHEADTITLE
+        from NOTICE_BOARD
+        where BIGHEADTITLE=#{BIGHEADTITLE}
+        order by TIME desc limit 3;
     </select>
 
 <!--    게시판 1개 출력-->
     <select id="board" parameterType="Map" resultType="Map">
-        SELECT ID, TITLE, HEADTITLE, CONTENTS, NUMBER, BIGHEADTITLE, NUMBER, NAME FROM NOTICE_BOARD WHERE NUMBER = #{NUMBER}
+        SELECT ID,
+               TITLE,
+               HEADTITLE,
+               CONTENTS,
+               NUMBER,
+               BIGHEADTITLE,
+               NUMBER,
+               NAME
+        FROM NOTICE_BOARD
+        WHERE NUMBER = #{NUMBER};
     </select>
 
 <!--    Nav쪽 게시판 여러개 출력(WEB, SECURITY)-->
     <select id="notice_board" parameterType="Map" resultType="Map">
-        select ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE from NOTICE_BOARD WHERE BIGHEADTITLE=#{BIGHEADTITLE}
+        select ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE
+        FROM NOTICE_BOARD
+        WHERE BIGHEADTITLE=#{BIGHEADTITLE};
     </select>
 
 <!--    검색 쿼리-->
     <select id="search_board" parameterType="Map" resultType="Map">
-        SELECT ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE FROM NOTICE_BOARD WHERE ${TITLE} = #{SEARCH} AND BIGHEADTITLE = #{BIGHEADTITLE}
+        SELECT ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE
+        FROM NOTICE_BOARD
+        WHERE ${TITLE} = #{SEARCH}
+          AND BIGHEADTITLE = #{BIGHEADTITLE};
     </select>
 
 <!--    게시판 값 추가-->
     <insert id="insert_board" parameterType="Map">
-        insert into NOTICE_BOARD (
-                            ID,
-                            BIGHEADTITLE,
-                            HEADTITLE,
-                            TITLE,
-                            CONTENTS,
-                            NAME,
-                            NUMBER,
-                            TIME
-                            ) values (
-                                      #{ID},
-                                      #{BIGHEADTITLE},
-                                      #{HEADTITLE},
-                                      #{TITLE},
-                                      #{CONTENTS},
-                                      #{NAME},
-                                      NUMBER_SEQ.NEXTVAL,
-                                      #{TIME}
-                                      )
+        insert into NOTICE_BOARD (ID,
+                                  BIGHEADTITLE,
+                                  HEADTITLE,
+                                  TITLE,
+                                  CONTENTS,
+                                  NAME,
+                                  NUMBER,
+                                  TIME)
+        values (#{ID},
+                #{BIGHEADTITLE},
+                #{HEADTITLE},
+                #{TITLE},
+                #{CONTENTS},
+                #{NAME},
+                NUMBER_SEQ.NEXTVAL,
+                #{TIME});
+
         </insert>
     <update id="update_board" parameterType="Map">
         update NOTICE_BOARD
-        set TITLE = #{TITLE}, HEADTITLE = #{HEADTITLE}, CONTENTS = #{CONTENTS}, TIME = #{TIME}
-        where ID = #{ID} AND NAME = #{NAME} AND BIGHEADTITLE = #{BIGHEADTITLE} AND NUMBER = #{NUMBER};
+        set TITLE     = #{TITLE},
+            HEADTITLE = #{HEADTITLE},
+            CONTENTS  = #{CONTENTS},
+            TIME      = #{TIME}
+        where ID = #{ID}
+          AND NAME = #{NAME}
+          AND BIGHEADTITLE = #{BIGHEADTITLE}
+          AND NUMBER = #{NUMBER};
     </update>
+
+    <select id="test" parameterType="org.iptime.kibnm821.homepage.bean.Paging" resultType="Map">
+        select ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE
+        from NOTICE_BOARD
+        WHERE BIGHEADTITLE=#{BIGHEADTITLE} LIMIT #{startPage}, #{PerPage};
+    </select>
+    <select id="board_cnt" parameterType="Map" resultType="int">
+        SELECT COUNT(*)
+        FROM NOTICE_BOARD
+        WHERE BIGHEADTITLE = #{BIGHEADTITLE};
+    </select>
 </mapper>

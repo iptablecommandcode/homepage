@@ -50,7 +50,7 @@ public class ContentController {
             resultMap = contentService.Notice_Board(dataMap);
             setViewName += "Content_new";
         } catch (Exception e) {
-            
+            setViewName = "error_page";
         } finally {
             //Front_End 출력
             modelAndView.addObject("resultMap", resultMap);
@@ -175,6 +175,8 @@ public class ContentController {
     public ModelAndView Save(ModelAndView modelAndView, HttpServletRequest request) {
         //각 페이지 이동 변수 초기화
         setViewName = MAPPING;
+        resultMap = new HashMap<String, Object>();
+        dataMap = new HashMap<>();
 
 //        웹 데이터 가져오기
         ID = request.getParameter("ID");
@@ -194,6 +196,13 @@ public class ContentController {
 
         //글 저장문실행 오류시 오류 페이지로 넘어감
         try {
+            //돌아갈 웹 페이지 링크 저장
+            if (BIGHEADTITLE.equals("WEB")) {
+                setViewName = "Main/Study/WEB";
+            } else if (BIGHEADTITLE.equals("SECURITY")) {
+                setViewName = "Main/Study/SECURITY";
+            }
+            
             contentService.insert_Board(dataMap);
 
 //            처리 후 게시판 자료 가져오기
@@ -202,21 +211,10 @@ public class ContentController {
         } catch (Exception e) {
             setViewName = "error_page";
         } finally {
-            if (BIGHEADTITLE.equals("WEB")) {
-                setViewName = "Main/Study/WEB";
-            } else if (BIGHEADTITLE.equals("SECURITY")) {
-                setViewName = "Main/Study/SECURITY";
-            }
-
             //최종 값 저장
             modelAndView.addObject("resultMap",resultMap);
             modelAndView.setViewName(setViewName);
         }
-
-        //        재사용을 위한 초기화
-        resultMap = new HashMap<String, Object>();
-        dataMap = new HashMap<>();
-
         return modelAndView;
     }
 }
