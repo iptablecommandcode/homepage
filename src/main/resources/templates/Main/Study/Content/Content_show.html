@@ -64,12 +64,7 @@
             <form action="/Main/Study/Content/Save" method="post">
 <!--                DB재전송-->
                 <div th:each="resultdata: ${resultMap.resultList}">
-                    <input type="hidden" name="ID" th:value="${resultdata.ID}">
-                    <input type="hidden" name="NAME" th:value="${session.NAME}">
-                    <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
-                    <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
     <!--                출력-->
-
                     <span class="mt-5">제목</span>
                     <p class="mt-2" th:text="${resultdata.TITLE}"></p>
 

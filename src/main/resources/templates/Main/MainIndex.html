@@ -71,16 +71,11 @@
                             </thead>
                             <tbody>
                                 <tr class="fs-6" th:each="resultdata: ${resultWeb.resultList}">
-                                    <input type="hidden" name="ID" th:value="${resultdata.ID}">
-                                    <input type="hidden" name="TITLE" th:value="${resultdata.TITLE}">
-                                    <input type="hidden" name="TIME" th:value="${resultdata.TIME}">
-                                    <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
-                                    <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
                                     <td>
                                         <p class="m-0" th:text="${resultdata.ID}"></p>
                                     </td>
                                     <td>
-                                        <button type="submit" name="table" class="bg-transparent border-0" formmethod="POST"
+                                        <button type="submit" name="WEB" class="bg-transparent border-0" formmethod="GET"
                                                 formaction="/Main/Study/Content/Content_show"
                                                 th:value="${resultdata.NUMBER}" th:text="${resultdata.TITLE}"/>
                                     </td>
@@ -103,17 +98,11 @@
                             </thead>
                             <tbody>
                                 <tr class="fs-6" th:each="resultdata: ${resultSecurity.resultList}">
-                                    <input type="hidden" name="ID" th:value="${resultdata.ID}">
-                                    <input type="hidden" name="TITLE" th:value="${resultdata.TITLE}">
-                                    <input type="hidden" name="TIME" th:value="${resultdata.TIME}">
-                                    <input type="hidden" name="NUMBER" th:value="${resultdata.NUMBER}">
-                                    <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
                                     <td>
                                         <p class="m-0" th:text="${resultdata.ID}"></p>
                                     </td>
                                     <td>
-                                        <input type="hidden" name="BIGHEADTITLE" th:value="${resultdata.BIGHEADTITLE}">
-                                        <button type="submit" name="table" class="bg-transparent border-0" formmethod="POST"
+                                        <button type="submit" name="SECURITY" class="bg-transparent border-0" formmethod="GET"
                                                 formaction="/Main/Study/Content/Content_show"
                                                 th:value="${resultdata.NUMBER}" th:text="${resultdata.TITLE}"/>
                                     </td>

@@ -7,7 +7,7 @@
 <mapper namespace="content">
 
 <!--    상위 3개-->
-    <select id="top_notice" parameterType="Map" resultType="Map">
+    <select id="top_notice" parameterType="org.iptime.kibnm821.homepage.bean.ACCOUNT_VO" resultType="Map">
         select ID, TITLE, TIME, NUMBER, BIGHEADTITLE
         from NOTICE_BOARD
         where BIGHEADTITLE=#{BIGHEADTITLE}

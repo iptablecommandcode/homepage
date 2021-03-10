@@ -5,6 +5,7 @@ import org.iptime.kibnm821.homepage.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +43,7 @@ public class IndexController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "login")
+    @RequestMapping(value = "login",method = {RequestMethod.POST})
     public ModelAndView Login(ModelAndView modelAndView, HttpServletRequest request, HttpSession session) {
 //        로그인실패시 출력 값 변수
         String fail = "계정이 없거나 로그인 되지 않았습니다.";
@@ -66,7 +67,7 @@ public class IndexController {
                     session.setAttribute("ID", account_VO.getID());
                     session.setAttribute("NAME", account_VO.getNAME());
                     System.out.println((((Map<String, Object>) resultMap).get("resultList")));
-                    setViewName = MAPPING + "MainIndex";
+                    setViewName = "redirect:" + MAPPING + "MainIndex";
                 } else {
                     modelAndView.addObject("result", fail);
                     setViewName = "index";
