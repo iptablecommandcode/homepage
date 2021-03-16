@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title th:text="${resultMap.resultList} + ' 업로드 페이지'"></title>
+        <title th:text="${BIGHEADTITLE} + ' 업로드 페이지'"></title>
 
         <!--        CSS 추가 예정-->
         <link rel="stylesheet" type="text/css" href="../../../../static/CSS/Style.css" th:href="@{/CSS/Style.css}">
@@ -64,9 +64,9 @@
             <form>
                 <div>
 <!--                    데이터 입력시 이름 아이디는 세션에서 뽑아온다-->
-                    <input type="hidden" name="ID" th:each="resultdata: ${resultMap.resultList}" th:value="${session.ID}   ">
-                    <input type="hidden" name="BIGHEADTITLE" th:each="resultdata: ${resultMap.resultList}" th:value="${resultdata.BIGHEADTITLE}">
-                    <input type="hidden" name="NAME" th:each="resultdata: ${resultMap.resultList}" th:value="${session.NAME}">
+                    <input type="hidden" name="ID" th:value="${session.ID}">
+                    <input type="hidden" name="BIGHEADTITLE" th:value="${BIGHEADTITLE}">
+                    <input type="hidden" name="NAME" th:value="${session.NAME}">
                     <div>
                         <input type="text" name="TITLE" class="form-control mt-5" placeholder="제목">
                         <input type="text" name="HEADTITLE" class="form-control mt-2" placeholder="머릿말">
@@ -77,7 +77,8 @@
                             <button type="button" class="btn btn-secondary" disabled>업로드</button>
                         </div>
                         <div class="d-flex justify-content-end col-3">
-                            <button type="submit" formmethod="post" formaction="/Main/Study/Content/Save" class="btn btn-primary col-1 m-1 col-5">저장</button>
+                            <button type="submit" formmethod="post" formaction="/Main/Study/Content/Save"
+                                    class="btn btn-primary col-1 m-1 col-5">저장</button>
                             <button type="reset" class="btn btn-danger col-1 m-1 col-5">취소</button>
                         </div>
                     </div>

@@ -75,9 +75,9 @@
                                         <p class="m-0" th:text="${resultdata.ID}"></p>
                                     </td>
                                     <td>
-                                        <button type="submit" name="WEB" class="bg-transparent border-0" formmethod="GET"
-                                                formaction="/Main/Study/Content/Content_show"
-                                                th:value="${resultdata.NUMBER}" th:text="${resultdata.TITLE}"/>
+                                        <button type="submit" name="content" formaction="/Main/Study/Content/Content_show"
+                                                class="btn btn-transparent p-0" formmethod="post" th:text="${resultdata.TITLE}"
+                                                th:value="${resultdata.NUMBER}"/>
                                     </td>
                                     <td>
                                         <p class="m-0" th:text="${resultdata.TIME}"></p>
@@ -102,9 +102,9 @@
                                         <p class="m-0" th:text="${resultdata.ID}"></p>
                                     </td>
                                     <td>
-                                        <button type="submit" name="SECURITY" class="bg-transparent border-0" formmethod="GET"
-                                                formaction="/Main/Study/Content/Content_show"
-                                                th:value="${resultdata.NUMBER}" th:text="${resultdata.TITLE}"/>
+                                        <button type="submit" name="content" formaction="/Main/Study/Content/Content_show"
+                                                class="btn btn-transparent p-0" formmethod="post" th:text="${resultdata.TITLE}"
+                                                th:value="${resultdata.NUMBER}"/>
                                     </td>
                                     <td>
                                         <p class="m-0" th:text="${resultdata.TIME}"></p>

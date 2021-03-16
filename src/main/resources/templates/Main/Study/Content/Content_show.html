@@ -61,7 +61,7 @@
         <!--            메인 메뉴-->
         <main class="container">
             <!--            검색메뉴-->
-            <form action="/Main/Study/Content/Save" method="post">
+            <form>
 <!--                DB재전송-->
                 <div th:each="resultdata: ${resultMap.resultList}">
     <!--                출력-->
@@ -75,8 +75,8 @@
                     <p class="mt-2 area" th:text="${resultdata.CONTENTS}"></p>
     <!--                계정마다 보이거나 안보이거나 구분-->
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary col-1 m-1" formaction="/Main/Study/Content/Content_patch"
-                                formmethod="POST" th:if="${resultdata.ID.equals(session.ID)}">수정</button>
+                        <button type="submit" name="content" class="btn btn-primary col-1 m-1" formaction="/Main/Study/Content/Content_patch"
+                                formmethod="POST" th:value="${resultdata.NUMBER}" th:if="${resultdata.ID.equals(session.ID)}">수정</button>
                     </div>
                 </div>
             </form>

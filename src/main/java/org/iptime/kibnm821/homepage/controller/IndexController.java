@@ -43,7 +43,7 @@ public class IndexController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "login",method = {RequestMethod.POST})
+    @RequestMapping(value = "login", method = {RequestMethod.POST})
     public ModelAndView Login(ModelAndView modelAndView, HttpServletRequest request, HttpSession session) {
 //        로그인실패시 출력 값 변수
         String fail = "계정이 없거나 로그인 되지 않았습니다.";
@@ -64,9 +64,8 @@ public class IndexController {
             } else {
                 if (resultMap.get("ID").equals(ID)) {
                     modelAndView.addObject("resultMap", resultMap);
-                    session.setAttribute("ID", account_VO.getID());
-                    session.setAttribute("NAME", account_VO.getNAME());
-                    System.out.println((((Map<String, Object>) resultMap).get("resultList")));
+                    session.setAttribute("ID", resultMap.get("ID"));
+                    session.setAttribute("NAME", resultMap.get("NAME"));
                     setViewName = "redirect:" + MAPPING + "MainIndex";
                 } else {
                     modelAndView.addObject("result", fail);
@@ -82,5 +81,14 @@ public class IndexController {
         ID = PASSWORD = null;
         resultMap = null;
         return modelAndView;
+    }
+
+    //error page
+    @RequestMapping(value = "error_page")
+    public String error_page(HttpSession session) {
+        session.removeAttribute("ID");
+        session.removeAttribute("NAME");
+
+        return "error_page";
     }
 }
