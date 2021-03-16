@@ -1,7 +1,7 @@
 package org.iptime.kibnm821.homepage.service;
 
-import java.util.Map;
+import org.iptime.kibnm821.homepage.bean.ACCOUNT_VO;
 
 public interface MemberService {
-    public Object LoginCheck(Map<String,Object> dataMap);
+    Object Account_Check(ACCOUNT_VO account_vo);
 }

@@ -1,6 +1,7 @@
 package org.iptime.kibnm821.homepage.service;
 
-import org.iptime.kibnm821.homepage.bean.Paging;
+import org.iptime.kibnm821.homepage.bean.CONTENT_VO;
+import org.iptime.kibnm821.homepage.bean.PagingVO;
 import org.iptime.kibnm821.homepage.repository.ContentDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,82 +11,81 @@ import java.util.Map;
 
 @Service
 public class ContentServiceImpl implements ContentService{
-
     @Autowired
     ContentDAO contentDAO;
+
+    //쿼리 호출
+    private String sqlMapId;
     
-    //순위
+    //상위 3개 요청
     @Override
-    public Object TopContent(Map<String, Object> dataMap) {
-        String sqlMapId = "content.top_notice";
+    public Object select_Top3(CONTENT_VO content_vo) {
+        sqlMapId = "content.top_notice";
         Object resultObject = new HashMap<>();
 
-        ((Map<String, Object>) resultObject).put("resultList", contentDAO.SelectContent(sqlMapId,dataMap));
+        ((Map<String, Object>) resultObject).put("resultList", contentDAO.SelectTopContent(sqlMapId, content_vo));
 
         return resultObject;
     }
 
-    //게시판 표현
+    //NAV게시판
     @Override
-    public Object Notice_Board(Map<String, Object> dataMap) {
-        String sqlMapId = "content.notice_board";
+    public Object select_Content(PagingVO pagingVO) {
+        sqlMapId = "content.notice_board";
         Object resultObject = new HashMap<>();
 
-        ((Map<String, Object>) resultObject).put("resultList", contentDAO.SelectContent(sqlMapId, dataMap));
+        ((Map<String, Object>) resultObject).put("resultList", contentDAO.SelectContent(sqlMapId, pagingVO));
 
         return resultObject;
     }
 
-    //검색
+    //글자 수
     @Override
-    public Object Search_Board(Map<String, Object> dataMap) {
-        String sqlMapId = "content.search_board";
+    public Object count_Content(CONTENT_VO content_vo) {
+        sqlMapId = "content.board_cnt";
+        Object resultObject;
+
+        resultObject = contentDAO.CountContent(sqlMapId, content_vo);
+
+        return resultObject;
+    }
+
+    @Override
+    public Object search_Content(PagingVO pagingVO) {
+        sqlMapId = "content.search_board";
         Object resultObject = new HashMap<>();
 
-        ((Map<String, Object>) resultObject).put("resultList", contentDAO.SelectContent(sqlMapId, dataMap));
+        ((Map<String, Object>) resultObject).put("resultList", contentDAO.SelectContent(sqlMapId, pagingVO));
 
         return resultObject;
     }
-    
-    //게시판 상세 화면 출력
+//상세 게시판
     @Override
-    public Object Board(Map<String, Object> dataMap) {
-        String sqlMapId = "content.board";
+    public Object Content_show(CONTENT_VO content_vo) {
+        sqlMapId = "content.board";
         Object resultObject = new HashMap<>();
-
-        ((Map<String, Object>) resultObject).put("resultList", contentDAO.SelectContent(sqlMapId, dataMap));
-
-        return resultObject;
-    }
-    
-    //새 글 추가
-    public void insert_Board(Map<String, Object> dataMap) {
-        String sqlMapId = "content.insert_board";
-        contentDAO.InsertContent(sqlMapId, dataMap);
-    }
-
-    //글 수정
-    @Override
-    public void update_Board(Map<String, Object> dataMap) {
-        String sqlMapId = "content.update_board";
-        contentDAO.UpdateContent(sqlMapId, dataMap);
-    }
-
-    //글 개수 검색
-    @Override
-    public Object Count_Board(Map<String, Object> dataMap) {
-        String sqlMapId = "content.board_cnt";
-        Object resultObject = contentDAO.SelectOne(sqlMapId,dataMap);
+        ((Map<String, Object>) resultObject).put("resultList", contentDAO.Content_show(sqlMapId, content_vo));
 
         return resultObject;
     }
 
     @Override
-    public Object test(Paging paging) {
-        String sqlMapId = "content.test";
-        Object resultObject = new HashMap<>();
-        resultObject = ((Map<String, Object>) resultObject).put("resultList", contentDAO.SelectText(sqlMapId, paging));
+    public Object Content_update(CONTENT_VO content_vo) {
+        sqlMapId = "content.update_board";
+        Object resultObject;
+
+        resultObject = contentDAO.Content_update(sqlMapId, content_vo);
+
         return resultObject;
     }
 
+    @Override
+    public Object Insert_Content(CONTENT_VO content_vo) {
+        sqlMapId = "content.insert_board";
+        Object resultObject;
+
+        resultObject = contentDAO.Content_update(sqlMapId, content_vo);
+
+        return resultObject;
+    }
 }

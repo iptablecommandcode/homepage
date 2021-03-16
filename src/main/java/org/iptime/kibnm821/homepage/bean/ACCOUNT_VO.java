@@ -1,6 +1,6 @@
 package org.iptime.kibnm821.homepage.bean;
 
-public class ACCOUNT_DTO {
+public class ACCOUNT_VO {
     private String ID;
     private String PASSWORD;
     private String NAME;

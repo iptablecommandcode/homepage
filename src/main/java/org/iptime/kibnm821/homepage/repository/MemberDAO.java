@@ -1,7 +1,7 @@
 package org.iptime.kibnm821.homepage.repository;
 
-import java.util.Map;
+import org.iptime.kibnm821.homepage.bean.ACCOUNT_VO;
 
 public interface MemberDAO {
-    public Object SelectAccount(Map<String,Object> dataMap);
+    Object MemberCheck(String sqlMapId, ACCOUNT_VO account_vo);
 }

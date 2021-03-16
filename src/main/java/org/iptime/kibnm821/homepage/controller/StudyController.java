@@ -1,16 +1,16 @@
 package org.iptime.kibnm821.homepage.controller;
 
-import org.iptime.kibnm821.homepage.bean.Paging;
+import org.iptime.kibnm821.homepage.bean.CONTENT_VO;
+import org.iptime.kibnm821.homepage.bean.PagingVO;
 import org.iptime.kibnm821.homepage.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class StudyController {
@@ -18,110 +18,123 @@ public class StudyController {
     @Autowired
     ContentService contentService;
 
-    //매핑 변수
-    private String setViewName;
+    //매퍼
     private final static String MAPPING = "Main/Study/";
+    private String setViewName;
 
-    //사용할 전역 변수
-    private String TITLE;
-    private String SEARCH;
-    private String BIGHEADTITLE;
+    //변수
+    private Object resultMap = new HashMap<>();
+    private int Count;
 
-    private Object resultMap = new HashMap<String, Object>();
-    private Map<String, Object> dataMap = new HashMap<String, Object>();
+    //웹 페이지 메소드
+    @RequestMapping(value = MAPPING + "WEB", method = {RequestMethod.GET})
+    public ModelAndView WEB(ModelAndView modelAndView, @RequestParam(defaultValue = "1") int nowPage) {
 
-    //Search
-    @RequestMapping(value = MAPPING + "Search", method = {RequestMethod.GET})
-    public ModelAndView Search(ModelAndView modelAndView, HttpServletRequest request) {
+        //VO
+        CONTENT_VO content_vo = new CONTENT_VO();
 
-        //웹 입력갑 저장 검색시
-        TITLE = request.getParameter("TITLE");
-        SEARCH = request.getParameter("SEARCH");
-        BIGHEADTITLE = request.getParameter("BIGHEADTITLE");
+        //WEB구분
+        content_vo.setBIGHEADTITLE("WEB");
+        //구분된 웹 총 글자수
+        Count = (int) contentService.count_Content(content_vo);
 
-        dataMap.put("TITLE", TITLE);
-        dataMap.put("SEARCH", SEARCH);
-        dataMap.put("BIGHEADTITLE", BIGHEADTITLE);
+        //페이징(총 페이지 개수, 현재 페이지, 페이지당 보일 글 개수, 웹 구분
+        PagingVO pagingVO = new PagingVO(Count, nowPage, 10, content_vo.getBIGHEADTITLE());
 
         try {
-            if (TITLE.equals("선택")) {
-                setViewName = "error_page";
-            } else if (SEARCH.equals(null)) {
-                setViewName = "error_page";
-            } else if (((Map<String, Object>) resultMap).get("resultList").equals(null)) {
-                setViewName = "error_page";
-            } else {
-                resultMap = contentService.Search_Board(dataMap);
-                setViewName = MAPPING + request.getParameter("BIGHEADTITLE");
-            }
-        } catch (Exception E) {
-            setViewName = "error_page";
-        } finally {
-            modelAndView.addObject("resultMap", resultMap);
-            modelAndView.setViewName(setViewName);
-        }
-
-        //        재사용을 위한 초기화
-        resultMap = new HashMap<String, Object>();
-        dataMap = new HashMap<>();
-
-        return modelAndView;
-    }
-
-    //상단 메뉴 Web
-    @RequestMapping(value = MAPPING + "WEB", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView Web_Content_Board(ModelAndView modelAndView, HttpServletRequest request) {
-        setViewName = MAPPING + "WEB";
-
-        //웹 별로 구분
-        try {
-            //구분 레코드 가져오기
-            dataMap.put("BIGHEADTITLE", "WEB");
-            //페이징 정보 가져오기
-            Paging paging = new Paging("WEB");
-
-            resultMap = contentService.test(paging);
-
-//            resultMap = contentService.Notice_Board(dataMap);
+            resultMap = contentService.select_Content(pagingVO);
+            setViewName = MAPPING + "StudyPage";
         } catch (Exception e) {
-            //에러페이지
-            setViewName = "redirect:error_page";
+            setViewName = "redirect: error_page";
         } finally {
-            //최종 값 입력
             modelAndView.addObject("resultMap", resultMap);
+            //페이징 번호, 다음 이전 페이지 마지막 페이지 번호
+            modelAndView.addObject("start", pagingVO.getStartPage());
+            modelAndView.addObject("end", pagingVO.getEndPage());
+            modelAndView.addObject("AFTER", pagingVO.getEndPage() + 1);
+            modelAndView.addObject("BEFORE", pagingVO.getStartPage() - 1);
+            modelAndView.addObject("FINAL", pagingVO.getLastPage());
+            //웹 제목
+            modelAndView.addObject("TITLE", "WEB");
             modelAndView.setViewName(setViewName);
         }
-
-        //        재사용을 위한 초기화
-        resultMap = new HashMap<String, Object>();
-        dataMap = new HashMap<>();
-
         return modelAndView;
     }
 
-    //상단 메뉴 Web
-    @RequestMapping(value = MAPPING + "SECURITY", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView Security_Content_Board(ModelAndView modelAndView, HttpServletRequest request) {
-        setViewName = MAPPING + "SECURITY";
+    //웹 페이지 메소드
+    @RequestMapping(value = MAPPING + "SECURITY", method = {RequestMethod.GET})
+    public ModelAndView SECURITY(ModelAndView modelAndView, @RequestParam(defaultValue = "1") int nowPage) {
+        //VO
+        CONTENT_VO content_vo = new CONTENT_VO();
 
-        //웹 별로 구분
+        //WEB구분
+        content_vo.setBIGHEADTITLE("SECURITY");
+        //구분된 웹 총 글자수
+        Count = (int)contentService.count_Content(content_vo);
+
+        //페이징(총 페이지 개수, 현재 페이지, 페이지당 보일 글 개수, 웹 구분
+        PagingVO pagingVO = new PagingVO(Count, nowPage, 10, content_vo.getBIGHEADTITLE());
+
         try {
-            //기본 WEB이나 Security페이지
-            dataMap.put("BIGHEADTITLE", "SECURITY");
-            resultMap = contentService.Notice_Board(dataMap);
+            resultMap = contentService.select_Content(pagingVO);
+            setViewName = MAPPING + "StudyPage";
         } catch (Exception e) {
-            //에러페이지
-            setViewName = "redirect:error_page";
+            setViewName = "redirect: error_page";
         } finally {
-            //최종 값 입력
             modelAndView.addObject("resultMap", resultMap);
+            //페이징 번호, 다음 이전 페이지 마지막 페이지 번호
+            modelAndView.addObject("start", pagingVO.getStartPage());
+            modelAndView.addObject("end", pagingVO.getEndPage());
+            modelAndView.addObject("AFTER", pagingVO.getEndPage() + 1);
+            modelAndView.addObject("BEFORE", pagingVO.getStartPage() - 1);
+            modelAndView.addObject("FINAL", pagingVO.getLastPage());
+            //웹 제목
+            modelAndView.addObject("TITLE", "SECURITY");
             modelAndView.setViewName(setViewName);
         }
 
-        //        재사용을 위한 초기화
-        resultMap = new HashMap<String, Object>();
-        dataMap = new HashMap<>();
-
         return modelAndView;
     }
+
+//    //검색 페이지 메소드
+//    @RequestMapping(value = MAPPING + "SEARCH", method = {RequestMethod.GET})
+//    public ModelAndView Search(ModelAndView modelAndView, @RequestParam(defaultValue = "1") int nowPage,
+//                               @RequestParam String SEARCHTITLE, @RequestParam String SEARCH,
+//                               HttpServletRequest request) {
+//
+//        //VO
+//        CONTENT_VO content_vo = new CONTENT_VO();
+//
+//        //WEB구분
+//        content_vo.setBIGHEADTITLE(request.getParameter("BIGHEADTITLE"));
+//        //구분된 웹 총 글자수
+//        Count = contentService.count_Content(content_vo);
+//
+//        //페이징(총 페이지 개수, 현재 페이지, 페이지당 보일 글 개수, 웹 구분
+//        PagingVO pagingVO = new PagingVO(Count, nowPage, 10, content_vo.getBIGHEADTITLE());
+//
+//        //웹 검색값 가져오기
+//        pagingVO.setSEARCHTITLE(SEARCHTITLE);
+//        pagingVO.setSEARCH(SEARCH);
+//
+//        try {
+//            resultMap = contentService.search_Content(pagingVO);
+//            setViewName = MAPPING + "StudyPage";
+//        } catch (Exception e) {
+//            setViewName = "redirect: error_page";
+//        } finally {
+//            modelAndView.addObject("resultMap", resultMap);
+//            //페이징 번호, 다음 이전 페이지 마지막 페이지 번호
+//            modelAndView.addObject("start", pagingVO.getStartPage());
+//            modelAndView.addObject("end", pagingVO.getEndPage());
+//            modelAndView.addObject("AFTER", pagingVO.getEndPage() + 1);
+//            modelAndView.addObject("BEFORE", pagingVO.getStartPage() - 1);
+//            modelAndView.addObject("FINAL", pagingVO.getLastPage());
+//            //웹 제목
+//            modelAndView.addObject("TITLE", pagingVO.getBIGHEADTITLE());
+//            modelAndView.setViewName(setViewName);
+//        }
+//
+//        return modelAndView;
+//    }
 }

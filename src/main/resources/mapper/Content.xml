@@ -7,15 +7,38 @@
 <mapper namespace="content">
 
 <!--    상위 3개-->
-    <select id="top_notice" parameterType="Map" resultType="Map">
-        select ID, TITLE, TIME, NUMBER, BIGHEADTITLE
+    <select id="top_notice" parameterType="org.iptime.kibnm821.homepage.bean.CONTENT_VO" resultType="Map">
+        SELECT ID, TITLE, TIME, NUMBER, BIGHEADTITLE
+        FROM NOTICE_BOARD
+        WHERE BIGHEADTITLE=#{BIGHEADTITLE}
+        ORDER BY TIME DESC limit 3;
+    </select>
+
+    <!--    Nav쪽 게시판 여러개 출력(WEB, SECURITY)-->
+    <select id="notice_board" parameterType="org.iptime.kibnm821.homepage.bean.PagingVO" resultType="Map">
+        select ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE
         from NOTICE_BOARD
-        where BIGHEADTITLE=#{BIGHEADTITLE}
-        order by TIME desc limit 3;
+        WHERE BIGHEADTITLE=#{BIGHEADTITLE}
+        ORDER BY NUMBER DESC LIMIT #{start}, #{end};
+    </select>
+
+    <select id="board_cnt" parameterType="org.iptime.kibnm821.homepage.bean.ACCOUNT_VO" resultType="int">
+        SELECT COUNT(*)
+        FROM NOTICE_BOARD
+        WHERE BIGHEADTITLE = #{BIGHEADTITLE};
+    </select>
+
+    <!--    검색 쿼리-->
+    <select id="search_board" parameterType="org.iptime.kibnm821.homepage.bean.PagingVO" resultType="Map">
+        SELECT ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE
+        FROM NOTICE_BOARD
+        WHERE ${SEARCHTITLE} = #{SEARCH}
+            AND BIGHEADTITLE = #{BIGHEADTITLE}
+            LIMIT #{start}, #{end};
     </select>
 
 <!--    게시판 1개 출력-->
-    <select id="board" parameterType="Map" resultType="Map">
+    <select id="board" parameterType="org.iptime.kibnm821.homepage.bean.CONTENT_VO" resultType="Map">
         SELECT ID,
                TITLE,
                HEADTITLE,
@@ -26,21 +49,6 @@
                NAME
         FROM NOTICE_BOARD
         WHERE NUMBER = #{NUMBER};
-    </select>
-
-<!--    Nav쪽 게시판 여러개 출력(WEB, SECURITY)-->
-    <select id="notice_board" parameterType="Map" resultType="Map">
-        select ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE
-        FROM NOTICE_BOARD
-        WHERE BIGHEADTITLE=#{BIGHEADTITLE};
-    </select>
-
-<!--    검색 쿼리-->
-    <select id="search_board" parameterType="Map" resultType="Map">
-        SELECT ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE
-        FROM NOTICE_BOARD
-        WHERE ${TITLE} = #{SEARCH}
-          AND BIGHEADTITLE = #{BIGHEADTITLE};
     </select>
 
 <!--    게시판 값 추가-->
@@ -63,7 +71,7 @@
                 #{TIME});
 
         </insert>
-    <update id="update_board" parameterType="Map">
+    <update id="update_board" parameterType="org.iptime.kibnm821.homepage.bean.CONTENT_VO">
         update NOTICE_BOARD
         set TITLE     = #{TITLE},
             HEADTITLE = #{HEADTITLE},
@@ -75,14 +83,4 @@
           AND NUMBER = #{NUMBER};
     </update>
 
-    <select id="test" parameterType="org.iptime.kibnm821.homepage.bean.Paging" resultType="Map">
-        select ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE
-        from NOTICE_BOARD
-        WHERE BIGHEADTITLE=#{BIGHEADTITLE} LIMIT #{startPage}, #{PerPage};
-    </select>
-    <select id="board_cnt" parameterType="Map" resultType="int">
-        SELECT COUNT(*)
-        FROM NOTICE_BOARD
-        WHERE BIGHEADTITLE = #{BIGHEADTITLE};
-    </select>
 </mapper>
