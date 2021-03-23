@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>로그인 페이지</title>
+
+        <!--bootstrap css,js code-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+<!--        jquery-->
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<!--        다음 주소 API 호출-->
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+        <!--        CSS 추가 예정-->
+        <link rel="stylesheet" type="text/css" href="../static/CSS/Style.css" th:href="@{/CSS/Style.css}">
+        <script type="text/javascript">
+            //id중복확인
+            function idCheck() {
+                var print = document.getElementById("check");
+                var ID = document.getElementById("ID").value;
+
+                if (ID == "") {
+                    idcorr = false;
+                    return print.innerHTML = '아이디를 입력하십시오.';
+                } else {
+                    $.ajax({
+                        url : "/idCheck?ID="+ID,
+                        type : "get",
+                        success : function (data) {
+                            //아이디 확인
+                            if (data == 1) {
+                                print.innerHTML = '사용할 수 없는 아이디 입니다.';
+                                idcorr = false;
+                            } else if (data != 1) {
+                                print.innerHTML = '사용할 수 있는 아이디 입니다.';
+                                idcorr = true;
+                            }
+                        }
+                    });
+                }
+            }
+
+            //비밀버호 확인
+            function paCheck() {
+                // is-valid 성공 실패
+                var pw = document.getElementById("PASSWORD").value;
+
+                //숫자 첫번째 위치
+                var num = pw.search(/[0-9]/g);
+
+                // 문자 첫번째 위치
+                var eng = pw.search(/[a-z]/ig);
+
+                //특수문자 첫번째 위치
+                var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+                //글자 개수
+                if (pw.toString().length < 8 || pw.toString().length > 20) {
+                    return document.getElementById("PASSWORD").setAttribute("class", "form-control col-2 is-invalid");
+                }
+
+                //공백 찾기
+                if (pw.toString().search(/₩s/) != -1) {
+                    return document.getElementById("PASSWORD").setAttribute("class", "form-control col-2 is-invalid");
+                }
+                //혼합 확인
+                if (num < 0 || eng < 0 || spe < 0) {
+                    return document.getElementById("PASSWORD").setAttribute("class", "form-control col-2 is-invalid");
+                }
+
+                // if(!paCheck( $.trim($('#mpassword').val()))){
+                //
+                //     $('#mpassword').val('');
+                //
+                //     $('#mpassword').focus();
+                //
+                //     return false;
+                //
+                // }
+
+                return document.getElementById("PASSWORD").setAttribute("class", "form-control col-2 is-valid");
+            }
+
+            //패스워드 재입력 확인
+            function PassReChk(){
+                var frontpass = document.getElementById("PASSWORD").value;
+                var backpass = document.getElementById("PASSCHK").value;
+
+                if (frontpass == backpass) {
+                    pwcorr = true;
+                    return document.getElementById("PASSCHK").setAttribute("class", "form-control col-2 is-valid")
+                }
+                else
+                    return document.getElementById("PASSCHK").setAttribute("class", "form-control col-2 is-invalid")
+            }
+
+            //주소검색
+            function DaumPostcode() {
+                new daum.Postcode({
+                    oncomplete: function(data) {
+                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                        // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                        var roadAddr = data.roadAddress; // 도로명 주소 변수
+                        var extraRoadAddr = ''; // 참고 항목 변수
+
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraRoadAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if(extraRoadAddr !== ''){
+                            extraRoadAddr = ' (' + extraRoadAddr + ')';
+                        }
+
+                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                        document.getElementById('POSTCODE').value = data.zonecode;
+                        document.getElementById("ROADADDRESS").value = roadAddr;
+                    }
+                }).open();
+            }
+        </script>
+    </head>
+
+    <body class="container d-flex justify-content-center">
+        <div class="card col-6 mt-5">
+            <div class="card-header fs-1">
+                회원 가입
+            </div>
+            <form>
+                <ul class="list-group list-group-flush p-3">
+                    <div class="input-group d-flex justify-content-center">
+                        <span class="input-group-text col-3">ID</span>
+                        <input type="text" class="form-control col-2" name="ID" id="ID" placeholder="ID를 입력하세요" required>
+                        <input class="input-group-text" type="button" onclick="idCheck()" value="중복 확인">
+                    </div>
+                    <p id="check" class="m-1"></p>
+                    <div class="input-group d-flex justify-content-center mb-2">
+                        <span class="input-group-text col-3">PASSWORD</span>
+                        <input type="password" class="form-control col-2" id="PASSWORD" name="PASSWORD"
+                               placeholder="PASSWORD를 입력하세요" onkeydown="paCheck()" required>
+                    </div>
+                    <div class="input-group d-flex justify-content-center mb-2">
+                        <span class="input-group-text col-3">PASSWORD 확인</span>
+                        <input type="password" class="form-control col-2" id="PASSCHK" placeholder="PASSWORD를 다시 입력하세요"
+                               onkeydown="PassReChk()" required>
+                    </div>
+                    <div class="input-group d-flex justify-content-center mb-2">
+                        <span class="input-group-text col-3">NAME</span>
+                        <input type="text" class="form-control col-2" name="NAME" placeholder="NAME" required>
+                    </div>
+                    <div class="input-group d-flex justify-content-center mb-2">
+                        <span class="input-group-text col-3">우편 번호</span>
+                        <input type="text" id="POSTCODE" class="form-control col-2" name="POSTCODE" placeholder="우편번호" required>
+                        <input type="button" class="input-group-text" onclick="DaumPostcode()" value="주소 검색">
+                    </div>
+                    <div class="input-group d-flex justify-content-center mb-2">
+                        <span class="input-group-text col-3">주소</span>
+                        <input type="text" id="ROADADDRESS" class="form-control col-2" name="ROADADDRESS" placeholder="도로명 주소" required>
+                    </div>
+                    <div class="input-group d-flex justify-content-center mb-2">
+                        <span class="input-group-text col-3">상세 주소</span>
+                        <input type="text" class="form-control col-2" name="MOREADDRESS" placeholder="상세주소" required>
+                    </div>
+                    <div class="input-group d-flex justify-content-center mb-2">
+                        <span class="input-group-text col-2">전화번호</span>
+                        <select class="form-select" name="PHONE1">
+                            <option selected value="010">010</option>
+                            <option value="011">011</option>
+                            <option value="017">017</option>
+                        </select>
+                        <span class="input-group-text">-</span>
+                        <input type="text" class="form-control col-2" name="PHONE2" required>
+                        <span class="input-group-text">-</span>
+                        <input type="text" class="form-control col-2" name="PHONE3" required>
+                    </div>
+
+                </ul>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary m-1 col-2" formmethod="post" formaction="/create_account">Sign_In</button>
+                    <button type="reset" class="btn btn-danger col-2 m-1">다시 입력</button>
+                </div>
+            </form>
+        </div>
+        <!--    footer-->
+        <footer class="d-flex justify-content-center footer">
+            <p class="m-3">개발 : 박치원</p>
+            <p class="m-3">Phone : +8210-2883-2980</p>
+            <address class="m-3">E-mail : iptablecommandcode@gmail.com</address>
+        </footer>
+    </body>
+</html>

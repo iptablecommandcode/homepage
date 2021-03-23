@@ -13,7 +13,7 @@
     </head>
 
     <body class="container">
-        <form action="/login" method="post">
+        <form method="post">
             <div class="mt-p">
     <!--            title-->
                 <div>
@@ -41,9 +41,17 @@
                     </div>
 
                     <!--           bottom-->
-                    <div class="row justify-content-md-center mt-5">
+                    <div class="row justify-content-center">
+
+                    </div>
+                    <div class="row justify-content-md-center mt-3">
                         <p class="d-flex justify-content-md-center" th:text="${result}"></p>
-                        <button type="submit" class="btn btn-primary col-3">Sign In</button>
+                        <button type="submit" formaction="/Sign_Up" class="col-2 m-1 btn btn-secondary">
+                            Sign_Up
+                        </button>
+                        <button type="submit" class="btn btn-primary col-2 m-1" formaction="/login">
+                            Sign In
+                        </button>
                     </div>
                 </div>
             </div>

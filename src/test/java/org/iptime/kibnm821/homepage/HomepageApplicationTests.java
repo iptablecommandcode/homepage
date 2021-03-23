@@ -1,14 +1,9 @@
 package org.iptime.kibnm821.homepage;
 
-import org.iptime.kibnm821.homepage.service.MemberService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootTest
 class HomepageApplicationTests{
@@ -41,4 +36,13 @@ class HomepageApplicationTests{
 //
 //        System.out.println("결과값은 : " + account.get("ID"));
 //    }
+
+    @Test
+    public void Encrypte(){
+        BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
+        String test = bCrypt.encode("1234");
+        System.out.println(test);
+
+
+    }
 }

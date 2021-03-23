@@ -11,7 +11,7 @@
         SELECT ID, TITLE, TIME, NUMBER, BIGHEADTITLE
         FROM NOTICE_BOARD
         WHERE BIGHEADTITLE=#{BIGHEADTITLE}
-        ORDER BY TIME DESC limit 3;
+        ORDER BY NUMBER DESC limit 3;
     </select>
 
     <!--    Nav쪽 게시판 여러개 출력(WEB, SECURITY)-->
@@ -52,7 +52,7 @@
     </select>
 
 <!--    게시판 값 추가-->
-    <insert id="insert_board" parameterType="Map">
+    <insert id="insert_board" parameterType="org.iptime.kibnm821.homepage.bean.CONTENT_VO">
         insert into NOTICE_BOARD (ID,
                                   BIGHEADTITLE,
                                   HEADTITLE,

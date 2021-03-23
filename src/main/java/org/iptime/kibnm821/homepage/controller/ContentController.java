@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.HashMap;
 
@@ -85,40 +85,26 @@ public class ContentController {
     }
 
     @RequestMapping(value = MAPPING + "Save", method = {RequestMethod.POST})
-    public ModelAndView Save(ModelAndView modelAndView, HttpServletRequest request,
-                             @RequestParam(defaultValue = "1") int nowPage) {
+    public ModelAndView Save(ModelAndView modelAndView, CONTENT_VO content_vo,
+                             @RequestParam(defaultValue = "1") int nowPage, HttpSession session) {
 
-        CONTENT_VO content_vo = new CONTENT_VO();
-
-        //웹에서 값 받아오기
-        String ID = request.getParameter("ID");
-        String NAME = request.getParameter("NAME");
-        String HEADTITLE = request.getParameter("HEADTITLE");
-        String BIGHEADTITLE = request.getParameter("BIGHEADTITLE");
-        String CONTENTS = request.getParameter("CONTENTS");
-        String TITLE = request.getParameter("TITLE");
-        String NUMBER = request.getParameter("NUMBER");
+        //시간 설정
         LocalDate TIME = localDate;
-
-        content_vo.setID(ID);
-        content_vo.setNAME(NAME);
-        content_vo.setHEADTITLE(HEADTITLE);
-        content_vo.setBIGHEADTITLE(BIGHEADTITLE);
-        content_vo.setCONTENTS(CONTENTS);
-        content_vo.setTITLE(TITLE);
         content_vo.setTIME(TIME);
 
+        content_vo.setNAME((String) session.getAttribute("ID"));
+
 //        업데이트시 사용하는 번호 입력 새로저장할때는 사용 x
-        if (request.getParameter("NUMBER") != null) {
-            content_vo.setNUMBER(Integer.parseInt(NUMBER));
-        }
+
 
         //구분된 웹 총 글자수
         int Count = (int)contentService.count_Content(content_vo);
 
         try {
-            //데이터 수정후 성공 실패시 아니면 새로운 글 추가 또는 오류
-            if (contentService.Content_update(content_vo).equals(1)) {
+            if (content_vo.getNUMBER() == 0) {
+                //새로운 글 입력
+                contentService.Insert_Content(content_vo);
+
                 //페이징(총 페이지 개수, 현재 페이지, 페이지당 보일 글 개수, 웹 구분
                 PagingVO pagingVO = new PagingVO(Count, nowPage, 10, content_vo.getBIGHEADTITLE());
 
@@ -135,10 +121,12 @@ public class ContentController {
                 //웹 제목
                 modelAndView.addObject("TITLE", content_vo.getBIGHEADTITLE());
                 setViewName = "Main/Study/StudyPage";
-            } else if (contentService.Insert_Content(content_vo).equals(1)) {
+            } else if (content_vo.getNUMBER() != 0) {
+                //글 수정
+                contentService.Content_update(content_vo);
+
                 //페이징(총 페이지 개수, 현재 페이지, 페이지당 보일 글 개수, 웹 구분
                 PagingVO pagingVO = new PagingVO(Count, nowPage, 10, content_vo.getBIGHEADTITLE());
-
                 resultMap = contentService.select_Content(pagingVO);
                 setViewName = MAPPING + "StudyPage";
 
@@ -152,16 +140,12 @@ public class ContentController {
                 //웹 제목
                 modelAndView.addObject("TITLE", content_vo.getBIGHEADTITLE());
                 setViewName = "Main/Study/StudyPage";
-            } else {
-                setViewName = "redirect:/error_page";
             }
-
         } catch (Exception e) {
-            setViewName = "redirect: /error_page";
-        } finally {
+            setViewName = "redirect: error_page";
+        }finally {
             modelAndView.setViewName(setViewName);
         }
-
         return modelAndView;
     }
 }

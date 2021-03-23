@@ -4,9 +4,16 @@ DROP SEQUENCE NUMBER_SEQ;
 
 CREATE TABLE MEMBER (
                         ID VARCHAR(10) PRIMARY KEY NOT NULL,
-                        PASSWORD VARCHAR(16),
+                        PASSWORD VARCHAR (200) NOT NULL,
                         NAME VARCHAR (20) NOT NULL,
-                        ADMIN VARCHAR (5) NOT NULL
+                        ADMIN VARCHAR (5) NOT NULL,
+                        POSTCODE INT,
+                        ROADADDRESS VARCHAR (200),
+                        MOREADDRESS VARCHAR (200),
+                        PHONE1 INT,
+                        PHONE2 INT,
+                        PHONE3 INT,
+                        TIME DATE
 );
 CREATE TABLE NOTICE_BOARD (
                      ID VARCHAR (10) NOT NULL,

@@ -7,16 +7,40 @@
 <mapper namespace="member">
 
     <select id="login" parameterType="org.iptime.kibnm821.homepage.bean.ACCOUNT_VO" resultType="Map">
-        select ID,NAME,ADMIN from MEMBER WHERE ID =#{ID} AND PASSWORD =#{PASSWORD}
+        select ID, PASSWORD, ADMIN, NAME from MEMBER WHERE ID =#{ID}
+    </select>
+    
+    <select id="idchk" parameterType="String" resultType="int">
+        SELECT count(*)
+        FROM MEMBER
+        WHERE ID = #{ID};
     </select>
 
-<!--    <insert id="member" parameterType="Map">-->
-<!--        insert into member (-->
-<!--                            ID,-->
-<!--                            PASSWORD-->
-<!--                            ) values (-->
-<!--                                      #{ID},-->
-<!--                                      #{PASSWORD}-->
-<!--                                      )-->
-<!--    </insert>-->
+    <insert id="create" parameterType="org.iptime.kibnm821.homepage.bean.ACCOUNT_VO">
+        insert into member (
+                            ID,
+                            PASSWORD,
+                            NAME,
+                            ADMIN,
+                            POSTCODE,
+                            ROADADDRESS,
+                            MOREADDRESS,
+                            PHONE1,
+                            PHONE2,
+                            PHONE3,
+                            TIME
+                            ) values (
+                                      #{ID},
+                                      #{PASSWORD},
+                                      #{NAME},
+                                      #{ADMIN},
+                                      #{POSTCODE},
+                                      #{ROADADDRESS},
+                                      #{MOREADDRESS},
+                                      #{PHONE1},
+                                      #{PHONE2},
+                                      #{PHONE3},
+                                      #{TIME}
+                                      )
+    </insert>
 </mapper>
