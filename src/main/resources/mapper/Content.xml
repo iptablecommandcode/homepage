@@ -16,8 +16,8 @@
 
     <!--    Nav쪽 게시판 여러개 출력(WEB, SECURITY)-->
     <select id="notice_board" parameterType="org.iptime.kibnm821.homepage.bean.PagingVO" resultType="Map">
-        select ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE
-        from NOTICE_BOARD
+        SELECT ID, TITLE, HEADTITLE, NAME, NUMBER, TIME, BIGHEADTITLE
+        FROM NOTICE_BOARD
         WHERE BIGHEADTITLE=#{BIGHEADTITLE}
         ORDER BY NUMBER DESC LIMIT #{start}, #{end};
     </select>
@@ -53,7 +53,7 @@
 
 <!--    게시판 값 추가-->
     <insert id="insert_board" parameterType="org.iptime.kibnm821.homepage.bean.CONTENT_VO">
-        insert into NOTICE_BOARD (ID,
+        INSERT INTO NOTICE_BOARD (ID,
                                   BIGHEADTITLE,
                                   HEADTITLE,
                                   TITLE,
@@ -61,23 +61,23 @@
                                   NAME,
                                   NUMBER,
                                   TIME)
-        values (#{ID},
+        VALUES (#{ID},
                 #{BIGHEADTITLE},
                 #{HEADTITLE},
                 #{TITLE},
                 #{CONTENTS},
                 #{NAME},
-                NUMBER_SEQ.NEXTVAL,
+                NEXTVAL(NUMBER_SEQ),
                 #{TIME});
 
         </insert>
     <update id="update_board" parameterType="org.iptime.kibnm821.homepage.bean.CONTENT_VO">
-        update NOTICE_BOARD
-        set TITLE     = #{TITLE},
+        UPDATE NOTICE_BOARD
+        SET TITLE     = #{TITLE},
             HEADTITLE = #{HEADTITLE},
             CONTENTS  = #{CONTENTS},
             TIME      = #{TIME}
-        where ID = #{ID}
+        WHERE ID = #{ID}
           AND NAME = #{NAME}
           AND BIGHEADTITLE = #{BIGHEADTITLE}
           AND NUMBER = #{NUMBER};

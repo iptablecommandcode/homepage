@@ -7,17 +7,17 @@
 <mapper namespace="member">
 
     <select id="login" parameterType="org.iptime.kibnm821.homepage.bean.ACCOUNT_VO" resultType="Map">
-        select ID, PASSWORD, ADMIN, NAME from MEMBER WHERE ID =#{ID}
+        SELECT ID, PASSWORD, ADMIN, NAME FROM MEMBER WHERE ID =#{ID}
     </select>
     
     <select id="idchk" parameterType="String" resultType="int">
-        SELECT count(*)
+        SELECT COUNT(*)
         FROM MEMBER
         WHERE ID = #{ID};
     </select>
 
     <insert id="create" parameterType="org.iptime.kibnm821.homepage.bean.ACCOUNT_VO">
-        insert into member (
+        INSERT INTO MEMBER (
                             ID,
                             PASSWORD,
                             NAME,
@@ -29,7 +29,7 @@
                             PHONE2,
                             PHONE3,
                             TIME
-                            ) values (
+                            ) VALUES (
                                       #{ID},
                                       #{PASSWORD},
                                       #{NAME},
